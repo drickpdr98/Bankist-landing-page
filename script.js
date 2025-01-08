@@ -163,9 +163,34 @@ const sectionObserver = new IntersectionObserver(revealSection, {
   root: null,
   threshold: 0.15,
 });
-
 sections.forEach(section => {
   section.classList.add('section--hidden');
   sectionObserver.observe(section);
 });
 ////////////////////////////////////////////////////////
+
+///////REVEALING IMGS ON SCROLL //////////////////
+const imgs = document.querySelectorAll('.features__img');
+
+const imgReveal = function (entries, observer) {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+
+    const target = entry.target;
+
+    target.src = target.dataset.src;
+
+    target.classList.remove('lazy-img');
+
+    observer.unobserve(target);
+  });
+};
+
+const imgObserver = new IntersectionObserver(imgReveal, {
+  root: null,
+  threshold: 0.8,
+});
+
+imgs.forEach(img => imgObserver.observe(img));
+
+////////////////////////////////////////////////
